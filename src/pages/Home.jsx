@@ -8,6 +8,7 @@ import {CircleArrowRight } from "lucide-react";
 import backgroundVideo from "../assets/videos/background.mp4";
 import FeaturesSection from "../components/FeatureSection";
 import AppDownloadSection from "../components/AppDownloadSection";
+import ServiceCarousel from "../components/ServiceCenterSection/ServiceCarousel";
 
 const SectionCard = ({ title, to, img }) => {
   return (
@@ -74,6 +75,9 @@ const Home = () => {
       </div>
 
     </div>
+
+      <ServiceCarousel service="Popular Service Centers"/>
+      <ServiceCarousel service="Featured Services"/>
 
       <FeaturesSection />
       <AppDownloadSection />
