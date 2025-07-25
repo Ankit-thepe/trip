@@ -1,14 +1,17 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import backgroundImage from "../assets/images/background.jpg";
-import autoParts from "../assets/images/autoParts.png";
+
 import services from "../assets/images/services.png";
 import { Link } from "react-router-dom";
 import {CircleArrowRight } from "lucide-react";
 import backgroundVideo from "../assets/videos/background.mp4";
-import FeaturesSection from "../components/FeatureSection";
-import AppDownloadSection from "../components/AppDownloadSection";
+import FeaturesSection from "../components/FeatureSection/FeaturesSection";
+import AppSection from "../components/Appdownload/AppSection.jsx";
 import ServiceCarousel from "../components/ServiceCenterSection/ServiceCarousel";
+import StatsSection from "../components/statssection/StatsSection";
+import FooterUpMain from "../components/footer/FooterUpMain.jsx";
+import FooterDown from "../components/footer/FooterDown.jsx";
+
 
 const SectionCard = ({ title, to, img }) => {
   return (
@@ -68,7 +71,7 @@ const Home = () => {
       <div className="relative z-20">
         <Navbar />
           <div className="flex flex-col items-start justify-center min-h-screen p-10 bg-opacity-50">
-         <SectionCard title="Auto Parts" to="/auto-parts" img={autoParts} />
+         <SectionCard title="Auto Parts" to="/auto-parts"  />
          <SectionCard title="Services" to="/services" img={services} />
        </div>
 
@@ -78,9 +81,13 @@ const Home = () => {
 
       <ServiceCarousel service="Popular Service Centers"/>
       <ServiceCarousel service="Featured Services"/>
-
       <FeaturesSection />
-      <AppDownloadSection />
+      <StatsSection />
+      
+      <AppSection />
+      <FooterUpMain />
+      <FooterDown />
+      
 
     </div>
   );
