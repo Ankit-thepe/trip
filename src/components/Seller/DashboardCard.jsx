@@ -1,5 +1,5 @@
 import React from "react";
-import CategoryCard from "./IndexOne";
+
 
 const DashboardCard = ({ title, value, color ,}) => {
   return (

@@ -2,14 +2,18 @@ import React from "react";
 
 const FeatureCard = ({ icon, title, description, iconBg }) => {
   return (
-    <div className="bg-white rounded-tr-4xl rounded-bl-4xl p-4 shadow-sm w-100">
-      <div className="flex items-center gap-2 mb-2">
-        <div className={`w-15 h-15 ${iconBg} rounded-full flex items-center justify-center`}>
+    // On mobile, card takes up most of the width. On medium screens and up, it takes the full width of its grid cell.
+    <div className="w-11/12 md:w-full bg-white rounded-xl p-4 md:p-6 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
+      <div className="flex items-center gap-4 mb-3">
+        {/* Icon container with responsive size */}
+        <div className={`w-10 h-10 md:w-12 md:h-12 ${iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
           {icon}
         </div>
-        <span className="font-bold text-sm px-15">{title}</span>
+        {/* Title with responsive text size */}
+        <span className="font-bold text-gray-800 text-base md:text-lg">{title}</span>
       </div>
-      <p className="text-xs text-gray-600 px-1 flex justify-center">{description}</p>
+      {/* Description text with responsive size */}
+      <p className="text-gray-600 text-sm md:text-base">{description}</p>
     </div>
   );
 };

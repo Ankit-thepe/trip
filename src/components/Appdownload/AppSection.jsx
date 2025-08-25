@@ -1,53 +1,67 @@
 import React from "react";
-import StoreButton from "./DownloadButton";
+import { motion } from "framer-motion";
+import DownloadButton from "./DownloadButton";
 
 // Images
 import phoneImage from "../../assets/images/download.jpg";
-import playIcon from "../../assets/images/customer.png";
-import appleIcon from "../../assets/images/city.png";
+import playIcon from "../../assets/images/customer.png"; // Assuming these are your correct play store icons
+import appleIcon from "../../assets/images/city.png"; // Assuming these are your correct app store icons
 
 const AppSection = () => {
   return (
-    <div className="bg-gray-100 py-12 px-4 sm:px-10 lg:px-20">
-        <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10 px-15">
+    // The main container is now relative to position the background color block
+    <div className="relative bg-slate-50 overflow-hidden">
+      {/* This div creates the teal background shape */}
+      <div className="absolute top-0 right-0 h-full w-full lg:w-1/2 bg-teal-500" />
 
-           {/* Left Section - Text + Buttons */}
-            <div className="max-w-xl text-center lg:text-left">
-               <h1 className="text-5xl sm:text-5xl font-bold text-gray-900 mb-4">
-                Book Faster with Our App
-               </h1>
-               <p className="text-gray-600 mb-8">
-                 Book services, get reminders, <br />
-                  track orders & more — all in one app.
-               </p>
+      <div className="relative max-w-7xl mx-auto py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Left Section - Text + Buttons */}
+          <div className="text-center lg:text-left">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight">
+              Book Faster with Our App
+            </h2>
+            <p className="mt-4 max-w-md mx-auto lg:mx-0 text-lg text-gray-600 leading-relaxed">
+              Book services, get reminders, track your orders, and access exclusive
+              offers—all in one place.
+            </p>
 
-               {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-20 justify-center lg:justify-start">
-                   <StoreButton
-                       icon={playIcon}
-                       label="Google Play"
-                       subLabel="GET IT ON"
-                       link="https://play.google.com/store"
-                    />
-                   <StoreButton
-                       icon={appleIcon}
-                       label="App Store"
-                       subLabel="Download on the"
-                       link="https://www.apple.com/app-store/"
-                     />
-                </div>
-           </div>
-
-            {/* Right Section - App Mockup Image */}
-            <div>
-                <img
-                src={phoneImage}
-                alt="App Preview"
-                className="w-[300px] sm:w-[350px] lg:w-[400px] object-contain"
-                />
+            {/* Buttons - with corrected gap */}
+            <div className="mt-8 flex gap-4 justify-center lg:justify-start">
+              <DownloadButton
+                icon={playIcon}
+                label="Google Play"
+                subLabel="GET IT ON"
+                link="https://play.google.com/store"
+              />
+              <DownloadButton
+                icon={appleIcon}
+                label="App Store"
+                subLabel="Download on the"
+                link="https://www.apple.com/app-store/"
+              />
             </div>
-        
+          </div>
+
+          {/* Right Section - App Mockup Image with Animation */}
+          <div className="flex justify-center">
+            {/* Using motion.img to animate the phone */}
+            <motion.img
+              src={phoneImage}
+              alt="App Preview"
+              className="w-[280px] sm:w-[320px] lg:w-[350px] object-contain drop-shadow-2xl"
+              // This creates the subtle floating animation
+              animate={{ y: ["0%", "-4%", "0%"] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
         </div>
+      </div>
     </div>
   );
 };

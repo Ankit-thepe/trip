@@ -1,25 +1,21 @@
-// components/OtherServicesCard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const OtherServicesCard = ({ icon, title }) => {
+const OtherServicesCard = ({ title, iconUrl, path }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate("/work-in-progress")}
-      className="flex flex-col items-center justify-center p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-transform cursor-pointer"
+      onClick={() => navigate(path)}
+      className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-indigo-300"
     >
-      {icon && (
-        <div className="mb-3 w-12 h-12">
-          <img
-            src={icon}
-            alt={title}
-            className="w-full h-full object-contain"
-          />
-        </div>
-      )}
-      <p className="text-sm font-medium text-center text-gray-700">{title}</p>
+      <img
+        src={iconUrl}
+        alt={title}
+        className="w-16 h-16 object-contain mb-3 rounded-full bg-white p-1 shadow-md"
+        onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/64x64/ccc/ffffff?text=Error'; }}
+      />
+      <p className="text-sm font-semibold text-gray-800">{title}</p>
     </div>
   );
 };

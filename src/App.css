@@ -12,3 +12,13 @@
 .popup {
   animation: popup 0.3s ease-out forwards;
 }
+/* Add this to your main CSS file */
+.text-stroke-2 {
+  -webkit-text-stroke-width: 2px;
+  text-stroke-width: 2px;
+}
+
+.text-stroke-white {
+  -webkit-text-stroke-color: white;
+  text-stroke-color: white;
+}

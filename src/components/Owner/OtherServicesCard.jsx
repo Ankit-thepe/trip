@@ -1,13 +1,16 @@
-// components/OtherServicesCard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const OtherServicesCard = ({ icon, title }) => {
+const OtherServicesCard = ({ icon, title, path }) => {
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(path);
+  };
 
   return (
     <div
-      onClick={() => navigate("/work-in-progress")}
+      onClick={handleClick}
       className="flex flex-col items-center justify-center p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-transform cursor-pointer"
     >
       {icon && (

@@ -123,30 +123,36 @@ const AutoPartsDashboard = () => {
   const renderPartCard = (part) => (
     <div
       key={part.id}
-      className="flex items-center justify-between border p-3 bg-white rounded shadow"
+      className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border p-3 bg-white rounded shadow"
     >
-      <div className="w-12 h-12 flex-shrink-0">
-        <img
-          src={part.image}
-          alt={part.name}
-          className="object-cover w-full h-full rounded cursor-pointer"
-          onClick={() => setExpandedImage(part.image)}
-        />
-      </div>
-
-      <div className="flex flex-col ml-4 flex-grow">
-        <div className="font-semibold">{part.name}</div>
-        <div className="text-sm text-gray-500">
-          {part.category} • {part.vehicleType} • {part.vehicleBrand} • {part.vehicleModel}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 flex-shrink-0">
+            <img
+            src={part.image}
+            alt={part.name}
+            className="object-cover w-full h-full rounded cursor-pointer"
+            onClick={() => setExpandedImage(part.image)}
+            />
         </div>
-        <div className="text-sm font-medium">{part.price}</div>
+
+        <div className="flex flex-col">
+            <div className="font-semibold">{part.name}</div>
+            <div className="text-sm text-gray-500 flex flex-wrap gap-x-2">
+                <span>{part.category}</span>
+                <span>• {part.vehicleType}</span>
+                <span>• {part.vehicleBrand}</span>
+                <span>• {part.vehicleModel}</span>
+            </div>
+            <div className="text-sm font-medium">{part.price}</div>
+        </div>
       </div>
 
-      <div className="flex gap-3">
-        <button className="text-blue-500" onClick={() => handleEdit(part)}>
+
+      <div className="flex gap-3 self-end sm:self-center">
+        <button className="text-blue-500 hover:text-blue-700" onClick={() => handleEdit(part)}>
           <FaEdit />
         </button>
-        <button className="text-red-500" onClick={() => handleDelete(part.id)}>
+        <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(part.id)}>
           <FaTrash />
         </button>
       </div>
@@ -154,8 +160,8 @@ const AutoPartsDashboard = () => {
   );
 
   return (
-    <div className="p-6 bg-gray-100 mt-10">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 sm:p-6 bg-gray-100 mt-10">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold">Auto Parts Listing</h1>
         <button
           onClick={() => {
@@ -174,16 +180,16 @@ const AutoPartsDashboard = () => {
             setImageFile(null);
             setEditingPartId(null);
           }}
-          className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
+          className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-green-700 w-full sm:w-auto justify-center"
         >
           <FaPlus /> List Auto Part
         </button>
       </div>
 
       {/* Filter Section */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <select
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded w-full"
           value={filters.vehicleType}
           onChange={(e) => setFilters({ ...filters, vehicleType: e.target.value })}
         >
@@ -193,7 +199,7 @@ const AutoPartsDashboard = () => {
           ))}
         </select>
         <select
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded w-full"
           value={filters.category}
           onChange={(e) => setFilters({ ...filters, category: e.target.value })}
         >
@@ -230,8 +236,8 @@ const AutoPartsDashboard = () => {
 
       {/* Form */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-md w-[500px] relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowForm(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-black"
@@ -245,7 +251,7 @@ const AutoPartsDashboard = () => {
             {/* Upload Image */}
             <div className="mb-4">
               <label className="font-medium mb-1 block">Upload Image</label>
-              <input type="file" accept="image/*" onChange={handleImageChange} />
+              <input type="file" accept="image/*" onChange={handleImageChange} className="text-sm"/>
               {(imageFile || newPart.image) && (
                 <img
                   src={imageFile || newPart.image}
@@ -272,7 +278,7 @@ const AutoPartsDashboard = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <select
                 value={newPart.vehicleType}
                 onChange={(e) => setNewPart({ ...newPart, vehicleType: e.target.value })}
