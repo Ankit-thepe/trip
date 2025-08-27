@@ -8,19 +8,7 @@ import OtherServices from "../../components/Seller/OtherServices";
 import Dashboard from "../../components/Seller/Dashboard";
 
 // A reusable Panel component for consistent styling, based on the design prompt.
-const DashboardPanel = ({ title, icon, children }) => (
-    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 h-full flex flex-col">
-        <div className="flex items-center mb-4">
-            {/* Icon Style: Circular, light gray background with an accent color for the icon graphic */}
-            <div className="mr-3 p-3 bg-gray-100 text-green-600 rounded-full">{icon}</div>
-            {/* Title Style: Bold, dark gray, and moderately large */}
-            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-        </div>
-        <div className="flex-grow">
-            {children}
-        </div>
-    </div>
-);
+
 
 const SellerDashboard = () => {
   // Data for the StatCards

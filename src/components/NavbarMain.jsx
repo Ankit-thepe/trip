@@ -76,6 +76,7 @@ const NavbarMain = () => {
                 <Link to="/user" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">User Dashboard</Link>
                 <Link to="/owner-dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Owner Dashboard</Link>
                 <Link to="/seller-dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Seller Dashboard</Link>
+                <Link to="/admin-dashboard" className="text-gray-700 hover:text-indigo-600 py-1 pl-2">Admin</Link>
                 <div className="border-t my-1"></div>
                 <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Login / Sign Up</Link>
               </div>
@@ -101,6 +102,7 @@ const NavbarMain = () => {
             <Link to="/user" className="text-gray-700 hover:text-indigo-600 py-1 pl-2">User</Link>
             <Link to="/owner-dashboard" className="text-gray-700 hover:text-indigo-600 py-1 pl-2">Owner</Link>
             <Link to="/seller-dashboard" className="text-gray-700 hover:text-indigo-600 py-1 pl-2">Seller</Link>
+            <Link to="/admin-dashboard" className="text-gray-700 hover:text-indigo-600 py-1 pl-2">Admin</Link>
             <div className="border-t pt-2">
                 <Link to="/login" className="text-indigo-600 font-semibold">Login / Sign Up</Link>
             </div>
