@@ -1,9 +1,17 @@
 import React from 'react';
 import HeroSection from '../components/Home/HeroSection';
+import PopularDestinations from '../components/Home/PopularDestinations';
+import ComparePrices from '../components/Home/ComparePrices';
 
 const HomePage: React.FC = () => (
     <div className="min-h-screen">
         <HeroSection />
+        
+        {/* Popular Destinations Section */}
+        <PopularDestinations />
+        
+        {/* Compare Prices Section */}
+        <ComparePrices />
         
         {/* Additional Content Section */}
         <div className="bg-gradient-to-br from-blue-50 to-purple-50 py-20">
