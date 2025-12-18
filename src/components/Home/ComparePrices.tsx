@@ -1,164 +1,116 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Plane, Train, Bus, ArrowRight, Clock, 
-  IndianRupee, Zap, CheckCircle, MapPin, 
-  ArrowRightLeft
-} from 'lucide-react';
-import { Link } from 'react-router-dom'; // Assuming you use react-router
+import { Plane, Train, Bus, ArrowRight, Clock, IndianRupee, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import useComparePricesPreviewStore from '../../lib/store/home/comparePricesPreviewStore';
 
 const ComparePricesPreview: React.FC = () => {
+  const { examples: storeExamples, route } = useComparePricesPreviewStore();
   
-  // Static example data to demonstrate the feature
-  const examples = [
-    {
-      type: 'Flight',
-      icon: <Plane className="w-5 h-5" />,
-      duration: '1h 20m',
-      price: '4,500',
-      tag: 'Fastest',
-      tagColor: 'bg-blue-100 text-blue-700',
-      accent: 'border-blue-200',
-      bg: 'bg-blue-50/50'
-    },
-    {
-      type: 'Smart Train',
-      icon: <Train className="w-5 h-5" />,
-      duration: '6h 30m',
-      price: '1,200',
-      tag: 'Best Value',
-      tagColor: 'bg-emerald-100 text-emerald-700',
-      accent: 'border-emerald-500 ring-1 ring-emerald-500', // Highlighted option
-      bg: 'bg-white shadow-xl scale-105 z-10' // Popped out
-    },
-    {
-      type: 'Volvo Bus',
-      icon: <Bus className="w-5 h-5" />,
-      duration: '9h 00m',
-      price: '850',
-      tag: 'Cheapest',
-      tagColor: 'bg-amber-100 text-amber-700',
-      accent: 'border-amber-200',
-      bg: 'bg-amber-50/50'
-    }
-  ];
+  const iconMap: Record<string, React.ReactNode> = {
+    'Flight': <Plane className="w-5 h-5" />,
+    'Smart Train': <Train className="w-5 h-5" />,
+    'Volvo Bus': <Bus className="w-5 h-5" />
+  };
+  
+  const examples = storeExamples.map(ex => ({
+    ...ex,
+    icon: iconMap[ex.type] || <Plane className="w-5 h-5" />
+  }));
 
   return (
-    <section className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
-      
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `radial-gradient(#4f46e5 1px, transparent 1px)`,
-          backgroundSize: '24px 24px'
-      }}></div>
-
-      <div className="max-w-5xl mx-auto relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center mb-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold text-slate-900 mb-4"
-          >
-            Don't Overpay. <span className="text-teal-600">Compare Smart.</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-slate-500 max-w-xl mx-auto"
-          >
-            We analyze flights, trains, and buses simultaneously to find the perfect balance between speed and cost.
-          </motion.p>
-        </div>
-
-        {/* The "Preview" Container */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="bg-slate-50 rounded-[2rem] border border-slate-200 p-6 md:p-8"
-        >
-          {/* Mock Route Header */}
-          <div className="flex items-center justify-between mb-8 border-b border-slate-200 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 text-slate-700 font-bold text-lg">
-                <MapPin className="w-5 h-5 text-teal-500" />
-                Delhi
-                <ArrowRight className="w-4 h-4 text-slate-400" />
-                Manali
-              </div>
-              <span className="hidden sm:inline-block px-3 py-1 bg-white border border-slate-200 rounded-full text-xs text-slate-500 font-medium">
-                12 Dec, 2024
-              </span>
+    <section id="compare-section" className="relative py-24 bg-white overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          
+          {/* Text Content */}
+          <div className="flex-1 text-center lg:text-left">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-yellow-50 text-yellow-600 text-xs font-bold uppercase tracking-wider mb-6 border border-yellow-100">
+              Money Saver
             </div>
-            <div className="text-xs text-slate-400 font-medium uppercase tracking-wider">
-              Example Result
-            </div>
-          </div>
-
-          {/* Comparison Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-            {examples.map((item, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ y: -5 }}
-                className={`relative rounded-2xl p-5 border ${item.accent} ${item.bg} transition-all duration-300`}
-              >
-                {/* Badge */}
-                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${item.tagColor}`}>
-                  {item.tag}
-                </div>
-
-                <div className="flex flex-col items-center text-center gap-3 mt-2">
-                  <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-700">
-                    {item.icon}
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-bold text-slate-800">{item.type}</h3>
-                    <div className="flex items-center justify-center gap-4 mt-2 text-sm text-slate-500">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" /> {item.duration}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="w-full h-px bg-slate-200/50 my-1"></div>
-
-                  <div className="flex items-center justify-center gap-1 text-slate-900">
-                    <IndianRupee className="w-4 h-4" />
-                    <span className="text-xl font-bold">{item.price}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Bottom Action Area */}
-          <div className="mt-8 text-center">
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 leading-tight">
+              Compare & <span className="text-teal-600">Save</span>
+            </h2>
+            <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-md mx-auto lg:mx-0">
+              We analyze thousands of routes instantly. Find the sweet spot between time saved and money spent in a single click.
+            </p>
             <Link to="/compare-prices"> 
               <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative inline-flex items-center gap-3 px-8 py-3.5 bg-slate-900 text-white rounded-xl font-semibold shadow-lg hover:bg-slate-800 transition-all"
+                whileHover={{ scale: 1.05 }} 
+                whileTap={{ scale: 0.95 }} 
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-slate-900 text-white rounded-full font-bold shadow-xl hover:bg-teal-600 transition-colors"
               >
-                <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                <span>Try Comparison Tool</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400" /> Start Comparing
               </motion.button>
             </Link>
-            <p className="mt-3 text-xs text-slate-400">
-              *Prices shown are real-time estimates based on live APIs.
-            </p>
           </div>
 
-        </motion.div>
+          {/* Comparison Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            className="flex-1 w-full max-w-md"
+          >
+            <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] relative">
+              {/* Floating Badge */}
+              <div className="absolute -top-4 -right-4 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg animate-bounce">
+                Best Value Found!
+              </div>
 
+              <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                <div className="font-bold text-slate-800 flex items-center gap-2 text-lg">
+                  {route.from} <ArrowRight className="w-4 h-4 text-slate-300" /> {route.to}
+                </div>
+                <div className="bg-green-50 px-2 py-1 rounded text-[10px] font-bold border border-green-100 text-green-600 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"/> Live
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {examples.map((item, i) => (
+                  <motion.div 
+                    key={i} 
+                    initial={{ x: 30, opacity: 0 }} 
+                    whileInView={{ x: 0, opacity: 1 }} 
+                    transition={{ delay: i * 0.1 }}
+                    className={`flex justify-between items-center p-4 rounded-2xl border transition-all ${
+                      item.bg.includes('teal') 
+                        ? 'bg-teal-50/50 border-teal-200 scale-105 shadow-md z-10' 
+                        : 'bg-white border-slate-100 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-${item.color}-50 text-${item.color}-600`}>
+                        {item.icon}
+                      </div>
+                      <div>
+                        <div className="font-bold text-slate-800 text-sm mb-0.5">{item.type}</div>
+                        <div className="flex items-center gap-1 text-xs text-slate-400 font-medium">
+                          <Clock className="w-3 h-3"/> {item.time}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`text-[9px] font-bold uppercase mb-1 px-2 py-0.5 rounded-full inline-block bg-${item.color}-50 text-${item.color}-600`}>
+                        {item.tag}
+                      </div>
+                      <div className="flex items-center justify-end font-bold text-slate-900 text-lg">
+                        <IndianRupee className="w-4 h-4"/> {item.price}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      
+      {/* CURVED BOTTOM -> Transition to Slate-50 (Itinerary) */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg className="relative block w-[calc(100%+1.3px)] h-[80px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" className="fill-slate-50 transform rotate-180 origin-center"></path>
+        </svg>
       </div>
     </section>
   );

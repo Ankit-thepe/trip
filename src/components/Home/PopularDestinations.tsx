@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue } from 'framer-motion';
 import { ChevronLeft, ChevronRight, MapPin, Star, Calendar, ArrowRight } from 'lucide-react';
-import { useCarouselStore } from '../../lib/store/carouselStore';
+import { useCarouselStore } from '../../lib/store/home/carouselStore';
+import usePopularDestinationsStore from '../../lib/store/home/popularDestinationsStore';
 
-// Import images (keeping your existing imports)
+// Keep existing imports for images
 import shimlaImg from '../../assets/images/shimla.jpg';
 import manaliImg from '../../assets/images/manali.jpg';
 import darjeelingImg from '../../assets/images/darjeeling.jpg';
@@ -13,106 +14,36 @@ import nainitalImg from '../../assets/images/nainital.jpg';
 import coorgImg from '../../assets/images/coorg.jpg';
 import munnarImg from '../../assets/images/munnar.jpg';
 
-interface Destination {
-  id: number;
-  name: string;
-  state: string;
-  image: string;
-  rating: number;
-  description: string;
-  bestTime: string;
-}
-
-const destinations: Destination[] = [
-  {
-    id: 1,
-    name: 'Shimla',
-    state: 'Himachal Pradesh',
-    image: shimlaImg,
-    rating: 4.5,
-    description: 'The Queen of Hills with colonial charm',
-    bestTime: 'Mar-Jun'
-  },
-  {
-    id: 2,
-    name: 'Manali',
-    state: 'Himachal Pradesh',
-    image: manaliImg,
-    rating: 4.7,
-    description: 'Adventure hub with stunning landscapes',
-    bestTime: 'Oct-Feb'
-  },
-  {
-    id: 3,
-    name: 'Darjeeling',
-    state: 'West Bengal',
-    image: darjeelingImg,
-    rating: 4.6,
-    description: 'Tea gardens and mountain views',
-    bestTime: 'Mar-May'
-  },
-  {
-    id: 4,
-    name: 'Ooty',
-    state: 'Tamil Nadu',
-    image: ootyImg,
-    rating: 4.4,
-    description: 'Serene hill station with lush gardens',
-    bestTime: 'Apr-Jun'
-  },
-  {
-    id: 5,
-    name: 'Mussoorie',
-    state: 'Uttarakhand',
-    image: mussoorieImg,
-    rating: 4.3,
-    description: 'Queen of the Hills with waterfalls',
-    bestTime: 'Sep-Nov'
-  },
-  {
-    id: 6,
-    name: 'Nainital',
-    state: 'Uttarakhand',
-    image: nainitalImg,
-    rating: 4.5,
-    description: 'Beautiful lake town in the mountains',
-    bestTime: 'Mar-Jun'
-  },
-  {
-    id: 7,
-    name: 'Coorg',
-    state: 'Karnataka',
-    image: coorgImg,
-    rating: 4.6,
-    description: 'Coffee plantations and misty hills',
-    bestTime: 'Oct-Mar'
-  },
-  {
-    id: 8,
-    name: 'Munnar',
-    state: 'Kerala',
-    image: munnarImg,
-    rating: 4.7,
-    description: 'Enchanting tea estates and valleys',
-    bestTime: 'Sep-Mar'
-  }
-];
+const imageMap: Record<string, string> = {
+  '/src/assets/images/shimla.jpg': shimlaImg,
+  '/src/assets/images/manali.jpg': manaliImg,
+  '/src/assets/images/darjeeling.jpg': darjeelingImg,
+  '/src/assets/images/ooty.jpg': ootyImg,
+  '/src/assets/images/mussoorie.jpg': mussoorieImg,
+  '/src/assets/images/nainital.jpg': nainitalImg,
+  '/src/assets/images/coorg.jpg': coorgImg,
+  '/src/assets/images/munnar.jpg': munnarImg,
+};
 
 const PopularDestinations: React.FC = () => {
   const { currentIndex, isAutoPlaying, setCurrentIndex, setAutoPlay } = useCarouselStore();
+  const { destinations: storeDestinations } = usePopularDestinationsStore();
   const constraintsRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const x = useMotionValue(0);
+  
+  const destinations = storeDestinations.map(dest => ({
+    ...dest,
+    image: imageMap[dest.image] || dest.image
+  }));
 
-  const CARD_WIDTH = 340; // Slightly narrower for a cleaner look
-  const GAP = 24;
+  const CARD_WIDTH = 340;
+  const GAP = 32; // Increased gap for airy feel
   const VISIBLE_CARDS = 3;
 
   useEffect(() => {
     if (isAutoPlaying) {
-      const interval = setInterval(() => {
-        handleNext();
-      }, 4000); // Slower, more relaxed interval
+      const interval = setInterval(() => handleNext(), 5000); // Slower interval
       return () => clearInterval(interval);
     }
   }, [isAutoPlaying, currentIndex]);
@@ -137,67 +68,62 @@ const PopularDestinations: React.FC = () => {
     }
   };
 
-  const handleDotClick = (index: number) => {
-    setCurrentIndex(index);
-    controls.start({ x: -index * (CARD_WIDTH + GAP) });
-  };
-
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 overflow-hidden">
+    <section id="destinations-section" className="relative pt-20 pb-32 bg-slate-50 overflow-hidden">
       
-      {/* Simple decorative background element */}
-      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-teal-50/50 to-transparent -z-10" />
+      {/* Soft Background Decor */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div className="absolute top-[10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-teal-100/50 blur-3xl mix-blend-multiply" />
+        <div className="absolute bottom-[10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-blue-100/50 blur-3xl mix-blend-multiply" />
+      </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header - Clean and Bold */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
-            <motion.span 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-teal-600 font-semibold tracking-wider text-sm uppercase mb-2 block"
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 text-teal-600 font-bold text-sm tracking-widest uppercase mb-3"
             >
+              <span className="w-8 h-[2px] bg-teal-600"></span>
               Discover Nature
-            </motion.span>
+            </motion.div>
             <motion.h2 
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight"
+              className="text-4xl md:text-5xl font-black text-slate-900 leading-tight"
             >
-              Popular Hill Stations
+              Popular <span className="text-teal-600 relative">
+                Destinations
+                <svg className="absolute w-full h-3 -bottom-1 left-0 text-teal-200/60 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                   <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
+                </svg>
+              </span>
             </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-gray-500 mt-4 text-lg font-light"
-            >
-              Escape to the mountains. Curated destinations for peace and adventure.
-            </motion.p>
           </div>
 
-          {/* Desktop Navigation Arrows */}
           <div className="hidden md:flex gap-3">
             <button 
               onClick={() => { handlePrev(); setAutoPlay(false); }}
-              className="p-4 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all duration-300 shadow-sm"
+              className="group p-4 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-800 hover:text-white transition-all shadow-sm"
             >
               <ChevronLeft size={24} />
             </button>
             <button 
               onClick={() => { handleNext(); setAutoPlay(false); }}
-              className="p-4 rounded-full bg-teal-600 text-white hover:bg-teal-700 transition-all duration-300 shadow-md hover:shadow-lg"
+              className="group p-4 rounded-full bg-slate-900 text-white hover:bg-teal-600 transition-all shadow-md hover:shadow-teal-500/30"
             >
               <ChevronRight size={24} />
             </button>
           </div>
         </div>
 
-        {/* Carousel Viewport */}
-        <div className="relative overflow-hidden cursor-grab active:cursor-grabbing py-4 pl-1" ref={constraintsRef}>
+        {/* Carousel */}
+        <div className="relative overflow-hidden cursor-grab active:cursor-grabbing py-8 -mx-4 px-4" ref={constraintsRef}>
           <motion.div
-            className="flex gap-6"
+            className="flex"
+            style={{ gap: GAP, x }}
             animate={controls}
             drag="x"
             dragConstraints={constraintsRef}
@@ -207,55 +133,50 @@ const PopularDestinations: React.FC = () => {
               else if (swipe > 10000) handlePrev();
               setAutoPlay(false);
             }}
-            style={{ x }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {destinations.map((destination) => (
               <motion.div
                 key={destination.id}
-                whileHover={{ y: -12 }}
-                transition={{ duration: 0.3 }}
-                className="flex-shrink-0 relative bg-white rounded-[2rem] shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
+                whileHover={{ y: -10 }}
+                className="flex-shrink-0 relative bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 overflow-hidden group border border-slate-100"
                 style={{ width: CARD_WIDTH }}
               >
-                {/* Image Section */}
+                {/* Image */}
                 <div className="relative h-64 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors z-10" />
                   <img
                     src={destination.image}
                     alt={destination.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />
-                  {/* Glassmorphism Rating */}
-                  <div className="absolute top-4 right-4 bg-white/30 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                    <span className="text-white text-sm font-bold">{destination.rating}</span>
+                  <div className="absolute top-4 right-4 z-20 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm">
+                    <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                    <span className="text-slate-900 text-xs font-bold">{destination.rating}</span>
                   </div>
                 </div>
 
-                {/* Content Section */}
+                {/* Content */}
                 <div className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-2xl font-bold text-gray-900">{destination.name}</h3>
-                  </div>
-                  
-                  <div className="flex items-center gap-1.5 text-gray-500 mb-4">
-                    <MapPin className="w-4 h-4 text-teal-500" />
-                    <span className="text-sm font-medium">{destination.state}</span>
+                  <div className="mb-3">
+                    <div className="flex items-center gap-1 text-teal-600 text-xs font-bold uppercase tracking-wide mb-1.5">
+                      <MapPin className="w-3 h-3" />
+                      {destination.state}
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 group-hover:text-teal-700 transition-colors">{destination.name}</h3>
                   </div>
 
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                  <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
                     {destination.description}
                   </p>
 
-                  {/* Footer Info */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2 text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg">
-                      <Calendar className="w-4 h-4" />
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                    <div className="flex items-center gap-2 text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                      <Calendar className="w-3.5 h-3.5" />
                       <span className="text-xs font-semibold">{destination.bestTime}</span>
                     </div>
 
-                    <button className="flex items-center gap-2 text-teal-600 font-bold text-sm hover:gap-3 transition-all duration-300 group">
-                      Explore
+                    <button className="w-9 h-9 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-teal-600 group-hover:text-white group-hover:border-teal-600 transition-all duration-300">
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -264,29 +185,13 @@ const PopularDestinations: React.FC = () => {
             ))}
           </motion.div>
         </div>
+      </div>
 
-        {/* Mobile Navigation / Dots */}
-        <div className="flex justify-center items-center gap-2 mt-10 md:hidden">
-          {Array.from({ length: destinations.length - VISIBLE_CARDS + 1 }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => { handleDotClick(index); setAutoPlay(false); }}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'w-8 bg-teal-600' 
-                  : 'w-2 bg-gray-300'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Bottom View All CTA */}
-        <div className="text-center mt-12">
-           <button className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-gray-900 border border-gray-200 font-semibold rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all duration-300">
-             View All Destinations
-           </button>
-        </div>
-
+      {/* CURVED BOTTOM -> Transition to White (Compare Prices) */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg className="relative block w-[calc(100%+1.3px)] h-[60px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-white"></path>
+        </svg>
       </div>
     </section>
   );
