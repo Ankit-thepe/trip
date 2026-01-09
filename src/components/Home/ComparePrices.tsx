@@ -34,7 +34,7 @@ const ComparePricesPreview: React.FC = () => {
             <p className="text-lg text-slate-500 mb-8 leading-relaxed max-w-md mx-auto lg:mx-0">
               We analyze thousands of routes instantly. Find the sweet spot between time saved and money spent in a single click.
             </p>
-            <Link to="/compare-prices"> 
+            <Link to="/transport"> 
               <motion.button 
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }} 

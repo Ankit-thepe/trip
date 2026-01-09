@@ -55,8 +55,9 @@ const Navbar: React.FC = () => {
   const navLinks: NavLinkItem[] = [
     { href: "/", label: "Home" },
     { href: "/destinations", label: "Destinations" },
+    { href: "/transport", label: "Transport" },
     { href: "/events", label: "Trip Planner" },
-    { href: "/about", label: "Hotels" },
+    { href: "/hotels", label: "Hotels" },
   ];
 
   const AppNavLink: React.FC<AppNavLinkProps> = ({ to, children, variant = 'light' }) => {
